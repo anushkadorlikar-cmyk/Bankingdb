@@ -833,63 +833,41 @@ select * from loans;
 select * from transactions;
 
 
+-- COUNT() Function
 
-
-
-
-    
-
-
- 
-
-
-
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  SELECT * FROM Customers;
+  SELECT COUNT(*) AS TotalCustomers FROM Customers;	
+  SELECT COUNT(Phone) AS TotalCustomers FROM Customers;
   
+  -- SUM() Function
   
+  SELECT * FROM Accounts;
+  SELECT SUM(Balance) as TotalBalance FROM Accounts;
+  SELECT SUM(Balance) AS SavingsBalance FROM Accounts WHERE AccountType ='Savings';
   
-
+   -- AVG() Function
    
+   SELECT * FROM Transactions;
+   SELECT AVG(Amount) as TotalAmountTransacted FROM Transactions;
+   SELECT AVG(Amount)  as TotalDepositeTransactions FROM Transactions WHERE TransactionType ='Deposite';
+   SELECT AVG(Amount)  as AverageAmountWithdrawal FROM Transactions WHERE TransactionType ='Withdrawal';
    
+   -- MAX () & MINIMUM () FUNCTION
    
-    
-    
-
-
-
-
-
-
+   SELECT MAX(Balance) as MaximumAmount FROM Accounts WHERE AccountType ='Savings';
+   SELECT MIN(Balance) as MinimumAmount FROM Accounts WHERE AccountType ='Savings';
+   
+   -- Group By
+   
+   SELECT TransactionType , sum(Amount) from Transactions GROUP BY (TransactionType);
+   
+   SELECT * FROM Accounts;
+   SELECT AccountType , COUNT(*) as TotalAccounts, SUM(Balance) as TotalBalance, avg(Balance) as avgBalance from Accounts GROUP BY (AccountType);
+   
+   SELECT BranchID, AccountType, COUNT(*) as AccountTypeAsPerBranchID FROM Accounts GROUP BY  BranchID, AccountType ORDER BY BranchID;
+   
+   -- Having
+    SELECT BranchID, AccountType, COUNT(*) as noofaccounts FROM Accounts GROUP BY  BranchID, AccountType HAVING Noofaccounts >=2 and AccountType ="Savings";
 
 
 
