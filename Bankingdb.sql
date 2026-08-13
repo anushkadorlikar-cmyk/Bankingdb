@@ -826,9 +826,11 @@ SELECT YEAR(DateOfBirth),MONTH(DateOfBirth),DAY(DateOfBirth) FROM Customers;
   
   SELECT CONCAT(FirstName," ",LastName) as FullName, AccountCreationDate, date_add(AccountCreationDate, interval 1 year) as KYCRenewal FROM Customers;
   
-  
-  
-  
+SELECT * FROM accounts; 
+select * from branches;
+select * from customers;
+select * from loans;
+select * from transactions;
 
 
 
