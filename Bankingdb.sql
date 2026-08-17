@@ -784,12 +784,12 @@ WHERE
     AccountType = 'Current';
 SELECT * FROM Transactions;
 SELECT avg(Amount) From Transactions WHERE TransactionType='Deposite';
-SELECT round(avg(Amount),2) From Transactions WHERE TransactionType='Deposite';
+SELECT round(avg(Amount),2) From Transactions WHERE TransactionType='Deposite'; -- nerest round up value (10.6 - 11) 
 
--- Ceil() or Ceiling Function
+-- Ceil() or Ceiling Function -- round up values
 SELECT Ceil(avg(Amount)) from Transactions WHERE TransactionType='Deposite';
 
--- Floor()  Function
+-- Floor()  Function -- Round Down word values .
 SELECT 
     Floor(AVG(Amount))
 FROM
@@ -843,7 +843,7 @@ select * from transactions;
   
   SELECT * FROM Accounts;
   SELECT SUM(Balance) as TotalBalance FROM Accounts;
-  SELECT SUM(Balance) AS SavingsBalance FROM Accounts WHERE AccountType ='Savings';
+  SELECT SUM(Balance) AS SavingsBalance FROM Accounts WHERE AccountType ='savings';
   
    -- AVG() Function
    
@@ -863,42 +863,54 @@ select * from transactions;
    
    SELECT * FROM Accounts;
    SELECT AccountType , COUNT(*) as TotalAccounts, SUM(Balance) as TotalBalance, avg(Balance) as avgBalance from Accounts GROUP BY (AccountType);
-   
    SELECT BranchID, AccountType, COUNT(*) as AccountTypeAsPerBranchID FROM Accounts GROUP BY  BranchID, AccountType ORDER BY BranchID;
    
    -- Having
+    
     SELECT BranchID, AccountType, COUNT(*) as noofaccounts FROM Accounts GROUP BY  BranchID, AccountType HAVING Noofaccounts >=2 and AccountType ="Savings";
 
+--  FIND number of customers for according to year from customers table 
+SELECT YEAR(accountcreationDate) AS Year, COUNT(*) AS NumberOfCustomers FROM Customers GROUP BY YEAR(accountcreationDate);
 
 
+-- my work -- 
+
+SELECT CustomerID,Phone from customers;
+select count(*) from customers; -- count (*) is count Null value also
+select * from customers;
+
+select * from customers
+order by FirstName ASC; -- A to Z OR Z to A
+
+select * from customers
+WHERE DateOfbirth between '1998-04-15'AND'2000-06-22';
+
+-- INNER JOIN
 
 
+select c.CustomerID, c.FirstName, c.LastName, l.LoanAmount, l.InterestRate
+from customers c
+inner join loans l
+on c.customerID = l.customerID; 
 
+-- find the branch name for the accountID'savepoint
+-- inculd account id,accounttype,branchname,branchaddress,
 
+select a.accountID, a.accounttype, b.BranchID, b.BranchAddress
+from accounts a
+inner join branches b
+on a.BranchID = b.BranchID
+where AccountType = "savings";
 
+SELECT * FROM transactions;
+-- FIND ALL THE CUSTOMERS NAME, PHONE ,accounttype, balanced
+-- where account type is savings
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+select c.FirstName ,c.LastName, c.phone, a.accounttype, a.Balance
+from customers c
+inner join accounts a
+on c.CustomerID = a.CustomerID
+where AccountType = "savings";
 
 
 
