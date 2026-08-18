@@ -886,7 +886,8 @@ select * from customers
 WHERE DateOfbirth between '1998-04-15'AND'2000-06-22';
 
 -- INNER JOIN
-
+ -- find all customers having loans with their names,
+ -- insert rate and loans,
 
 select c.CustomerID, c.FirstName, c.LastName, l.LoanAmount, l.InterestRate
 from customers c
@@ -912,8 +913,65 @@ inner join accounts a
 on c.CustomerID = a.CustomerID
 where AccountType = "savings";
 
+-- left join 
+INSERT INTO Customers
+VALUES
+('110', 'shereya','Bhowate','shereya2@gmail.com', NULL, '2026-07-09','9991-02-08'),
+('111', 'khushbu','kale','khushi2@gmail.com', NULL, '2026-04-05','1986-04-10'),
+('112', 'tanya','sharma','tanya2@gmail.com', '4538723194', '2023-05-12','9091-04-08');
+select * from customers;
+
+select c.firstname,c.lastname,c.phone,a.accounttype,a.Balance
+from customers c
+ left join accounts a 
+ ON C.CustomerID = a.CustomerID;
+
+select c.firstname,c.lastname,c.phone,a.accounttype,a.Balance
+from accounts a 
+ left join customers c
+ ON C.CustomerID = a.CustomerID;
+
+-- right join
+
+INSERT INTO Branches
+(BranchID, BranchName, BranchAddress, BranchPhone)
+VALUES
+('006','WardhaBranch','WardhaMaharshtra','3456789754');
+select * from branches;
 
 
+ INSERT INTO Transactions
+(TransactionID, TransactionDate, Amount, TransactionType, AccountID)
+VALUES
+(409,'2025-12-03','20000.00','Deposite',208),
+(410,'2026-08-03','70000.00','Withdrawal',201),
+(411,'2025-03-02','78000.00','Transfer',204),
+(412,'2026-01-07','68000.00','Deposite',203);
+SELECT * FROM Transactions;
+
+INSERT INTO Accounts
+(AccountID, CustomerID, AccountType, Balance, BranchID)
+VALUES
+(209,102,'Cureent',25000,'002'),
+(210,103,'Savings',30000,'003'),
+(211,104,'Current',60000,'004');
+select * from accounts;
+
+INSERT INTO Customers
+VALUES
+('113', 'aaditya','Gaidhane','aditya2@gmail.com', '2356789546', '2026-04-05','1986-04-10'),
+('114', 'tanmay','Tiwade','tanmay2@gmail.com', '4538575194', '2023-05-12','9091-04-08'),
+('115', 'apeksha','atkare','apeksha2@gmail.com', '3472737675', '2026-07-09','9991-02-22'),
+('116', 'tanmayeeu','patile','tanmayee2@gmail.com', '3574748698', '2026-04-05','1986-06-11'),
+('117', 'rehan','chure','rehan2@gmail.com', '4538723194', '2023-05-12','9091-03-18');
+
+select * from customers;
+
+select C.CustomerID,a.accountID ,concat_ws(" ",c. firstname,c.lastname) as fullname,a.accounttype,a.Balance
+from customers c 
+inner join accounts a
+on c.CustomerID = a. CustomerID
+order by customerID;
 
 
 
