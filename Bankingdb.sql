@@ -928,7 +928,7 @@ from customers c
 
 select c.firstname,c.lastname,c.phone,a.accounttype,a.Balance
 from accounts a 
- left join customers c
+ LEFT join customers c
  ON C.CustomerID = a.CustomerID;
 
 -- right join
@@ -1096,23 +1096,245 @@ on b.BranchID = a.BranchID
 group by b.BranchID
 having totalaccounts >2;
 
--- Full outer join --
+-- Full outer join --             -- FULL OUTER JOIN --  (returns all records from both tables, whether they match or not)
 
 select * from Customers c
 left join Accounts a
 on c.CustomerID = a.CustomerID
-UNION
+UNION                              -- union -- (LEFT JOIN result + RIGHT JOIN result → UNION → one combined result)
 select * from Customers c
 right join Accounts a
 on c.CustomerID = a.CustomerID;
 
--- CROSS JOIN --
+-- CROSS JOIN --               -- (ross Join returns every possible combination of rows from two tables)
 select * from Customers c
 CROSS join Accounts a
 on c.CustomerID = a.CustomerID;
 
+-- Self join --               ( Self Join is used to find the relationship between rows within the same table )
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY,
+    EmployeeName VARCHAR(50) NOT NULL,
+    ManagerID INT,
+    Department VARCHAR(50),
+    Salary DECIMAL(10,2),
+    JoiningDate DATE,
+    BranchID INT,
+
+    FOREIGN KEY (ManagerID)
+        REFERENCES Employees(EmployeeID),
+
+    FOREIGN KEY (BranchID)
+        REFERENCES Branches(BranchID)
+);
+
+INSERT INTO Employees VALUES
+(1,'Rahul',NULL,'Management',85000,'2020-03-12',1),
+(2,'Neha',1,'Loans',52000,'2021-05-04',1),
+(3,'Rohan',1,'Accounts',58000,'2021-07-15',2),
+(4,'Priti',2,'Loans',42000,'2022-02-10',2),
+(5,'Akash',2,'Loans',45000,'2022-08-20',3),
+(6,'Snehal',3,'Accounts',40000,'2023-01-18',3);
+INSERT INTO Employees VALUES
+(7,'Vikas',3,'Accounts',43000,'2023-03-25',2),
+(8,'Riya',4,'Loans',39000,'2023-06-10',1),
+(9,'Aditya',4,'Loans',41000,'2023-09-05',3),
+(10,'Kavya',5,'HR',37000,'2024-01-12',2);
+select * from Employees;
+
+SELECT 
+    e.EmployeeName AS Employee,
+    m.EmployeeName AS Manager
+FROM Employees e
+LEFT JOIN Employees m 
+ON e.ManagerID = m.EmployeeID;
+
+SELECT 
+    e.EmployeeName AS Employee,
+    m.EmployeeName AS Manager
+FROM Employees e
+inner JOIN Employees m 
+ON e.ManagerID = m.EmployeeID;
+
+select c.CustomerID,concat(c.FirstName ," ", c.LastName) as FullName,a.AccountID,a.AccountType,a.Balance
+ from customers c
+ inner join accounts a
+ on c.CustomerID=a.CustomerID
+ ORDER BY c.CustomerID;
+ 
+-- SELF JOIN AND CREATE TABLE  
+
+CREATE TABLE Employees( EmployeeID INT PRIMARY KEY,
+EmployeeName varchar (50) NOT NULL,
+ManagerID int ,
+Department varchar(50),
+salary DECIMAL(10,2),
+JoiningDate DATE,
+BranchID INT ,
+
+foreign key (ManagerID)
+references Employees(EmployeeID),
+
+foreign key (BranchID)
+references Branches(BranchID)
+);
+SELECT * FROM Employees;
+alter table Employees
+rename column salary to Salary ;
+
+INSERT INTO Employees
+    (EmployeeID, EmployeeName, ManagerID, Department, Salary, JoiningDate, BranchID)
+VALUES
+    (1, 'Rajesh Sharma', NULL, 'Management', 120000.00, '2018-04-15', 1),
+    (2, 'Priya Patel', 1, 'Human Resources', 75000.00, '2019-06-10', 2),
+    (3, 'Amit Kumar', 1, 'Finance', 82000.00, '2020-01-20', 3),
+    (4, 'Sneha Verma', 1, 'IT', 95000.00, '2019-09-05', 4),
+    (5, 'Rahul Singh', 1, 'Sales', 78000.00, '2021-03-12', 5),
+    (6, 'Neha Joshi', 2, 'Human Resources', 55000.00, '2021-07-19', 1),
+    (7, 'Vikas Gupta', 2, 'Human Resources', 52000.00, '2022-02-14', 2),
+    (8, 'Pooja Mehta', 3, 'Finance', 60000.00, '2021-11-08', 3),
+    (9, 'Suresh Yadav', 3, 'Finance', 58000.00, '2022-05-16', 4),
+    (10, 'Anjali Deshmukh', 4, 'IT', 72000.00, '2020-08-24', 5),
+    (11, 'Rohan Kulkarni', 4, 'IT', 68000.00, '2021-10-11', 1),
+    (12, 'Kavita Rao', 4, 'IT', 65000.00, '2022-01-17', 2),
+    (13, 'Arjun Malhotra', 5, 'Sales', 57000.00, '2022-06-20', 3),
+    (14, 'Meena Shah', 5, 'Sales', 59000.00, '2021-12-06', 4),
+    (15, 'Deepak Thakur', 5, 'Sales', 54000.00, '2023-01-09', 5),
+    (16, 'Nitin Pawar', 6, 'Human Resources', 42000.00, '2023-04-18', 1),
+    (17, 'Swati Mishra', 7, 'Human Resources', 40000.00, '2023-07-03', 2),
+    (18, 'Manish Jain', 8, 'Finance', 45000.00, '2023-02-27', 3),
+    (19, 'Komal Sinha', 9, 'Finance', 43000.00, '2023-08-14', 4),
+    (20, 'Akash Bansal', 10, 'IT', 50000.00, '2023-05-22', 5);
+SELECT 
+    e.EmployeeID,
+    e.employeename AS Employee,
+    m.employeename AS Manager,e.BranchID
+FROM
+    employees e
+LEFT JOIN
+    employees m 
+ON e.ManagerID = m.employeeid;
+     
+SELECT 
+    e.EmployeeID,
+    e.employeename AS Employee,
+    m.employeename AS Manager,b.BranchID,b.BranchName
+FROM
+    employees e
+LEFT JOIN
+    employees m 
+ON e.ManagerID = m.employeeid
+inner join branches b 
+on b.BranchID=e.BranchID
+order by EmployeeID asc;
+
+-- display to report sneha verma 
+-- find the all the employee who report to shena verma 
+select e.EmployeeID,e.Department,e.EmployeeName as EmployeeName   
+from employees e
+left join employees m
+on e.ManagerID =m.EmployeeID
+where e.ManagerID = 4;
 
 
+-- Find all customers having balance more than average balance  in saving account
+
+select avg(Balance) as AverageBalance from accounts
+where AccountType ='saving' ;
+
+select  concat(c.firstname," ",c.lastname) as FullName   ,avg(a.balance) as Average,a.AccountType
+from customers c 
+left join accounts a 
+on c.CustomerID=a.CustomerID
+where a.AccountType = 'saving'
+group by FullName 
+having Average > 18375;
+
+-- SUBQUERIS
+-- SCALAR SUBQUERIS or Single value Subquery 
+select concat(c.firstname," ",c.lastname) as FullName   ,avg(a.balance) as Average,a.AccountType
+from customers c 
+left join accounts a 
+on c.CustomerID=a.CustomerID
+where a.AccountType = 'saving' 
+group by FullName
+having avg(a.Balance) > ( select avg(Balance)  from accounts
+where AccountType ='saving' );
+
+select AccountID , CustomerID from accounts
+where  Balance >
+ ( select avg(Balance)  from accounts );
+ 
+ select AccountID , CustomerID from accounts
+ where AccountType = 'saving' and balance > (select avg(balance) from accounts
+ where AccountType='saving') ;
+ 
+ select c.FirstName, a.AccountID ,c.CustomerID from customers c
+ inner join accounts a 
+ on a.CustomerID = c.CustomerID
+where  accounttype ='saving' and  a.Balance >
+ ( select avg(Balance)  from accounts
+  where accounttype ='saving');
+
+-- find the accounts whose balance is greater than
+-- the average balance of thir respective branch 
+
+select * from accounts;
+
+select a.AccountID ,a.BranchID,a.Balance
+from accounts a 
+where a.balance > (
+select avg(b.balance)
+from accounts b 
+where a.BranchID = b.BranchID );
+
+select a.AccountID,a.Balance,a.BranchID from accounts a 
+where a.Balance > (
+select avg(a1.Balance) from Accounts a1 where a1.BranchID = a.BranchID );
+
+select e.EmployeeID,e.EmployeeName,e.Salary,e.Department
+from Employees e 
+where e.salary > ( 
+select avg(e1.salary) 
+from Employees e1 
+where e1.Department = e.Department);
+
+ -- find the customers who have more than one accounts ( single value retrun/column)
+ 
+select c.FirstName,c.LastName
+from customers c where ( select count(*) from accounts a 
+where c.customerID = a.CustomerID )>1;
+
+select * from accounts;
+
+-- find the average account balance for each account type 
+-- using a derived table
+
+select AccountType, avrageBalance from (select AccountType, avg(Balance) as avrageBalance from accounts
+group by AccountType
+) AccountBalance;
+
+-- Display only those account types whose average balance is greater than 48,000
+select AccountType, avrageBalance from (select AccountType, avg(Balance) as avrageBalance from accounts
+group by AccountType
+) AccountBalance 
+where avrageBalance > 48000;
+
+-- Find the top 3 customers based on thir total account balance
+
+SELECT c.CustomerID,SUM(a.Balance) AS TotalBalance
+FROM Customers c
+inner JOIN Accounts a
+ON c.CustomerID = a.CustomerID
+group by CustomerID
+order by totalbalance desc limit 3 ;
+
+SELECT c.CustomerID,c.FirstName,c.LastName,SUM(a.Balance) AS TotalBalance
+FROM Customers c
+inner JOIN Accounts a
+ON c.CustomerID = a.CustomerID
+group by CustomerID
+order by totalbalance desc limit 3 ;
 
 
 
