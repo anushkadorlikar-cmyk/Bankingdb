@@ -1302,7 +1302,7 @@ where e1.Department = e.Department);
  -- find the customers who have more than one accounts ( single value retrun/column)
  
 select c.FirstName,c.LastName
-from customers c where ( select count(*) from accounts a 
+from customers c where ( select count(*) from accounts a  -- corelated subqueris
 where c.customerID = a.CustomerID )>1;
 
 select * from accounts;
@@ -1336,9 +1336,19 @@ ON c.CustomerID = a.CustomerID
 group by CustomerID
 order by totalbalance desc limit 3 ;
 
+-- subquery inside select clause 
+-- Display each customers along with the number
 
+select CustomerID,FirstName,LastName,(select count(*) from accounts a
+where c.CustomerID = a.CustomerID) AS TOTALACCOUNTS
+from customers c ;
 
+-- subqueries inside UPDATE clause
+-- increase the balance of accounts belonging to customers
+-- who have tekin along by 5%
 
+select * from accounts;
+select * from loans;
 
-
-
+update Accounts set Balance = Balance + Balance*0.05
+where CustomerID IN ( select CustomerID from Loans );
